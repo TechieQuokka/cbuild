@@ -5,9 +5,9 @@ edition = "2024"
 description = "A Cargo-like build tool for C"
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/TechieQuokka/cbuild"
-homepage = "https://github.com/TechieQuokka/cbuild"
-documentation = "https://github.com/TechieQuokka/cbuild"
+repository = "https://github.com/TechieQuokka/cman"
+homepage = "https://github.com/TechieQuokka/cman"
+documentation = "https://github.com/TechieQuokka/cman"
 keywords = ["c", "build", "build-system", "make", "cargo"]
 categories = ["development-tools::build-utils", "command-line-utilities"]
 

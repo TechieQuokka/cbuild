@@ -2,7 +2,7 @@
 
 A Cargo-like build tool for C, written in Rust.
 
-C has excellent compilers and no default project workflow. `cbuild` supplies the missing
+C has excellent compilers and no default project workflow. `cman` supplies the missing
 half: a manifest, a conventional layout, and a build that knows what it already built.
 
 ```console
@@ -148,9 +148,17 @@ absence.
 ## Development
 
 ```console
-$ cargo test      # unit tests for the .d parser and package-name validation
+$ cargo test              # unit tests for the .d parser and package-name validation
+$ ./tests/e2e.sh          # 50 assertions against real C projects
 $ cargo clippy --all-targets
 ```
+
+`tests/e2e.sh` is where the behaviour that matters is actually verified. It builds real
+projects in a temporary directory and checks the things unit tests cannot see: that a
+touched header rebuilds its dependents and nothing else, that `--release` and debug stay
+independent, that a failed compile leaves no object behind, that exit codes propagate, and
+that 25 units compiled in parallel still link correctly. Point it at any binary with
+`CMAN=$(command -v cman) ./tests/e2e.sh`.
 
 ## License
 
