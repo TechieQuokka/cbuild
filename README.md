@@ -1,6 +1,6 @@
-# cbuild
+# cman
 
-A Cargo-like build tool for C, written in Rust. The command is called `cman`.
+A Cargo-like build tool for C, written in Rust.
 
 C has excellent compilers and no default project workflow. `cbuild` supplies the missing
 half: a manifest, a conventional layout, and a build that knows what it already built.
@@ -27,10 +27,16 @@ dependency tracking, which is what hand-written Makefiles usually get wrong.
 Requires a Rust toolchain (2024 edition, i.e. Rust 1.85+) and a C compiler.
 
 ```console
+$ cargo install cman
+```
+
+Or from a checkout:
+
+```console
 $ cargo install --path .
 ```
 
-This installs the `cman` binary. To hack on it instead:
+To hack on it instead:
 
 ```console
 $ cargo build && ./target/debug/cman --help

@@ -1,14 +1,15 @@
 [package]
-name = "cbuild"
+name = "cman"
 version = "0.1.0"
 edition = "2024"
 description = "A Cargo-like build tool for C"
 license = "MIT"
 readme = "README.md"
-
-[[bin]]
-name = "cman"
-path = "src/main.rs"
+repository = "https://github.com/TechieQuokka/cbuild"
+homepage = "https://github.com/TechieQuokka/cbuild"
+documentation = "https://github.com/TechieQuokka/cbuild"
+keywords = ["c", "build", "build-system", "make", "cargo"]
+categories = ["development-tools::build-utils", "command-line-utilities"]
 
 [dependencies]
 anyhow = "1.0.104"
