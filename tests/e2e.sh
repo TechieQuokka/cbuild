@@ -316,6 +316,34 @@ check "every unit is compiled" "25" "$(ls target/debug/obj/*.o | wc -l)"
 check "all 24 units link and produce the right answer" "linked" "$e"
 
 echo
+echo "=== 20. VS Code auto-save settings ==="
+cd "$WORK" || exit 1
+check "new writes the settings file" "onFocusChange" "$(cat big/.vscode/settings.json)"
+# A project that predates the feature, or one whose .vscode was deleted: the
+# build command has to put it back on its own.
+rm -rf big/.vscode
+cd big || exit 1
+out=$("$CMAN" build 2>&1)
+check "build reports configuring the editor" "Configured" "$out"
+check "build writes the settings file" "onFocusChange" "$(cat .vscode/settings.json)"
+out=$("$CMAN" build 2>&1)
+refute "a second build says nothing about it" "Configured" "$out"
+# JSONC that no strict JSON parser would accept: proof that cman rewrites
+# nothing rather than merging into settings it cannot safely parse.
+printf '{\n  // mine\n  "files.autoSave": "off",\n}\n' > .vscode/settings.json
+"$CMAN" clean >/dev/null 2>&1
+"$CMAN" check >/dev/null 2>&1
+check "existing settings are left alone" '"files.autoSave": "off"' "$(cat .vscode/settings.json)"
+check "even the comments survive" "// mine" "$(cat .vscode/settings.json)"
+rm -rf .vscode
+CMAN_NO_EDITOR_SETUP=1 "$CMAN" build >/dev/null 2>&1
+[ -e .vscode ] && v="written" || v="absent"
+check "CMAN_NO_EDITOR_SETUP turns the feature off" "absent" "$v"
+cd "$WORK" || exit 1
+out=$(CMAN_NO_EDITOR_SETUP=1 "$CMAN" new quiet 2>&1)
+refute "the opt-out covers new as well" "Configured" "$out"
+
+echo
 echo "======================================"
 echo "  passed: $pass   failed: $fail"
 echo "======================================"

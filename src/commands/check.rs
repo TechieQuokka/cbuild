@@ -7,11 +7,13 @@ use anyhow::{Result, bail};
 use crate::cli::Profile;
 use crate::commands::{build, status};
 use crate::compiler::{self, Compiler};
+use crate::editor;
 use crate::manifest::Project;
 
 pub fn execute(profile: Profile) -> Result<()> {
     let started = Instant::now();
     let project = Project::discover()?;
+    editor::ensure_auto_save(&project.root)?;
 
     let compiler = Compiler::detect();
     let base_flags = compiler.base_flags(&project, profile);

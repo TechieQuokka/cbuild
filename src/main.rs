@@ -1,6 +1,7 @@
 mod cli;
 mod commands;
 mod compiler;
+mod editor;
 mod fingerprint;
 mod manifest;
 

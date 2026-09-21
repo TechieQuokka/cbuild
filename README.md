@@ -127,6 +127,27 @@ Independent files compile in parallel, up to the number of available cores. Diag
 buffered and printed in source order, so concurrent output never interleaves and the build
 log is identical whether it ran on one core or sixteen.
 
+## Editor integration
+
+Building from a terminal next to an editor has an old failure mode: you hit build before the
+editor has written the buffer to disk, and compile the previous version of the file. `cman`
+cannot save another program's unsaved work, so it asks the editor to do it instead.
+
+`new`, `init`, `build`, `run` and `check` each write this file if the project does not have
+one already:
+
+```json
+// .vscode/settings.json
+{
+  "files.autoSave": "onFocusChange"
+}
+```
+
+VS Code then saves every dirty editor the moment focus leaves the window — which is exactly
+what happens when you click over to the terminal. An existing `.vscode/settings.json` is
+never modified: those files are JSONC, and merging a key into one is a good way to destroy
+someone's comments. Set `CMAN_NO_EDITOR_SETUP=1` to turn the whole thing off.
+
 ## Choosing a compiler
 
 `cman` uses `$CC`, falling back to `cc`.

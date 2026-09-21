@@ -6,10 +6,12 @@ use anyhow::{Context, Result};
 
 use crate::cli::Profile;
 use crate::commands::{build, status};
+use crate::editor;
 use crate::manifest::Project;
 
 pub fn execute(profile: Profile, args: &[String]) -> Result<ExitCode> {
     let project = Project::discover()?;
+    editor::ensure_auto_save(&project.root)?;
     let output = build::build(&project, profile)?;
 
     status("Running", build::relative(&project, &output.bin));

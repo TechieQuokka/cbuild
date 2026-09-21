@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 use anyhow::{Context, Result, bail};
 
 use crate::commands::status;
+use crate::editor;
 use crate::manifest::MANIFEST_FILE;
 
 const MAIN_C: &str = r#"#include <stdio.h>
@@ -60,6 +61,9 @@ fn scaffold(dir: &Path, name: Option<String>) -> Result<()> {
     write_new(&src.join("main.c"), MAIN_C)?;
 
     status("Created", format!("binary `{name}` package"));
+    // After the "Created" line, so the editor note reads as a footnote to the
+    // new package rather than as part of it.
+    editor::ensure_auto_save(dir)?;
     Ok(())
 }
 

@@ -9,6 +9,7 @@ use anyhow::{Context, Result, bail};
 use crate::cli::Profile;
 use crate::commands::status;
 use crate::compiler::{self, Compiler};
+use crate::editor;
 use crate::fingerprint;
 use crate::manifest::Project;
 
@@ -25,6 +26,7 @@ pub struct BuildOutput {
 
 pub fn execute(profile: Profile) -> Result<()> {
     let project = Project::discover()?;
+    editor::ensure_auto_save(&project.root)?;
     build(&project, profile).map(|_| ())
 }
 
